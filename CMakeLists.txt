@@ -28,5 +28,11 @@ include_directories(${PYTHON_INCLUDE_DIR})
 # source
 ################################################################################
 
-add_library(depthProb SHARED src/common.hpp src/common.cpp)
-target_link_libraries(depthProb ${PYTHON_LIBRARY} boost_python)
+set(SRC src/common.hpp
+        src/common.cpp
+        src/estimator.hpp
+        src/estimator.cpp)
+include_directories(/src)
+
+add_library(depthProb SHARED ${SRC})
+target_link_libraries(depthProb ${PYTHON_LIBRARY} boost_python ${CERES_LIBRARIES})

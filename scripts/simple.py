@@ -12,6 +12,8 @@ print dp.RandomUniform(-1.0, 5.0, 10)
 
 print "generate gaussion random with unit distribution"
 
-data = dp.RandomGaussion(2.0, 1.0, 100) + dp.RandomUniform(-1.0, 10.0, 100)
+data = dp.RandomGaussion(2.5, 1.0, 1000) + dp.RandomUniform(-1.0, 10.0, 500)
 pl.hist(data, np.arange(-1., 10, 0.5))
 pl.show()
+
+dp.solveParams(data)
