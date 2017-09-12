@@ -62,12 +62,12 @@ public:
     }
 
     void estimate();
-
+    std::vector<double> params;//pi mu sigma
 private:
     const std::vector<double>& _data;
     double _min;
     double _max;
-    std::vector<double> params;//pi mu sigma
+
 };
 
 

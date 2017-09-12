@@ -34,6 +34,19 @@ boost::python::list common::RandomUniform(double min,double max, unsigned int n)
     return hist;
 }
 
+boost::python::list common::GetGaussionSamples(const double& mu, const double& sigma, const boost::python::list& sample_Xs)
+{
+    boost::python::list samples_Ys;
+    std::function< double(double) > f_gaussion = [=](double x)->double{
+        return 1.0/(std::sqrt(2*M_PI)*sigma)*std::exp(-(x-mu)*(x-mu)/(2*sigma*sigma));
+    };
+    for (int j = 0; j < boost::python::len(sample_Xs); ++j) {
+        double x = boost::python::extract<double>(sample_Xs[j]);
+        samples_Ys.append(f_gaussion(x));
+    }
+    return samples_Ys;
+}
+
 
 boost::python::list common::solveParams(const boost::python::list& data)
 {
@@ -44,6 +57,12 @@ boost::python::list common::solveParams(const boost::python::list& data)
     DistributionEstimator estimator(input_data);
     estimator.estimate();
 
-    return boost::python::list();
+
+    boost::python::list result;
+    result.append(estimator.params[0]);
+    result.append(estimator.params[1]);
+    result.append(estimator.params[2]);
+
+    return result;
 }
 
