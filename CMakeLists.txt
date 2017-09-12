@@ -20,9 +20,10 @@ include(cmake/ceres_dep.cmake)
 include(cmake/glog_dep.cmake)
 #- Boost
 include(cmake/boost_dep.cmake)
-
-find_package(PythonLibs)
-include_directories(${PYTHON_INCLUDE_DIR})
+#- python
+include(cmake/python_dep.cmake)
+#- opencv
+include(cmake/opencv_dep.cmake)
 
 ################################################################################
 # source
@@ -31,8 +32,23 @@ include_directories(${PYTHON_INCLUDE_DIR})
 set(SRC src/common.hpp
         src/common.cpp
         src/estimator.hpp
-        src/estimator.cpp)
+        src/estimator.cpp src/matchingtest.cpp)
 include_directories(/src)
 
 add_library(depthProb SHARED ${SRC})
-target_link_libraries(depthProb ${PYTHON_LIBRARY} boost_python ${CERES_LIBRARIES})
+target_link_libraries(depthProb
+        ${PYTHON_LIBRARY}
+        boost_python
+        ${CERES_LIBRARIES}
+        ${GLOG_LIBRARIES}
+        ${OpenCV_LIBRARIES}
+        gomp)
+
+add_executable(matching_test src/matchingtest.cpp)
+target_link_libraries(matching_test
+        ${OpenCV_LIBRARIES}
+        ${GLOG_LIBRARIES}
+        )
+
+
+
