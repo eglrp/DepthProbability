@@ -8,7 +8,7 @@ project(DepthProbability)
 ################################################################################
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-
+set(CMAKE_CXX_FLAGS ${CMAKE_CSS_FLAGS} "-fPIC")
 ################################################################################
 # dependency
 ################################################################################
@@ -24,6 +24,15 @@ include(cmake/boost_dep.cmake)
 include(cmake/python_dep.cmake)
 #- opencv
 include(cmake/opencv_dep.cmake)
+#- OpenMVS
+include(cmake/OpenMVS.cmake)
+
+find_package(SuiteSparse REQUIRED)
+find_package(CXSparse REQUIRED)
+
+################################################################################
+# third parties
+################################################################################
 
 ################################################################################
 # source
@@ -32,17 +41,22 @@ include(cmake/opencv_dep.cmake)
 set(SRC src/common.hpp
         src/common.cpp
         src/estimator.hpp
-        src/estimator.cpp src/matchingtest.cpp)
+        src/estimator.cpp src/matchingtest.cpp src/mvs.cpp src/mvs.h)
 include_directories(/src)
 
-add_library(depthProb SHARED ${SRC})
+add_library(depthProb SHARED ${SRC} )
 target_link_libraries(depthProb
         ${PYTHON_LIBRARY}
         boost_python
         ${CERES_LIBRARIES}
         ${GLOG_LIBRARIES}
         ${OpenCV_LIBRARIES}
-        gomp)
+        gomp
+        ${OpenMVS_LIBRARIES}
+        ${SUITESPARSE_LIBRARIES}
+        ${CXSPARSE_LIBRARIES}
+        )
+message(STATUS "SUITESPARSE_LIBRARIES: ${SUITESPARSE_LIBRARIES}")
 
 add_executable(matching_test src/matchingtest.cpp)
 target_link_libraries(matching_test

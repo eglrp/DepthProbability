@@ -7,6 +7,11 @@
 
 #include <Eigen/Dense>
 #include <boost/python.hpp>
+#include "mvs.h"
+#include <stdio.h>
+
+
+
 
 
 namespace common{
@@ -28,6 +33,13 @@ BOOST_PYTHON_MODULE(libdepthProb)
     boost::python::def("GetGaussionSamples", common::GetGaussionSamples);
     
     boost::python::def("solveParams", common::solveParams);
+
+    boost::python::class_<mvs>("mvs", boost::python::init<int>())
+            .def("readScene", &mvs::readScene)
+            .def("getImage", &mvs::getImage)
+            .def("estimateDepthMap",&mvs::estimateDepthMap)
+            .def("getDepth",&mvs::getDepth)
+            ;
 }
 
 #endif //DEPTHPROBABILITY_COMMON_HPP

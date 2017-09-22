@@ -3,7 +3,7 @@
 //
 #include "common.hpp"
 #include "estimator.hpp"
-#include <iostream>
+
 
 //u,sigma,n
 boost::python::list common::RandomGaussion(double mu,double sigma, unsigned int n){
